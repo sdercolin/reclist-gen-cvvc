@@ -1,7 +1,7 @@
 import re
 import codecs
 
-version = "180918"
+version = "191120"
 debug = True
 
 
