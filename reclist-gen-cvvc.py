@@ -129,7 +129,7 @@ class worker():
             for _vv in self.vvlist:
                 read_result.write(_vv.name + "\r\n")
 
-    def gen_CVVC(self, path='reclist_cvvc.txt', length=5, UsePlanB=False, CV_head=True, IncludeVV=False, UseUnderlineInReclist=False, otopath='oto.ini', OtoMaxOfSame=-1, preset_blank=float(500), oto_bpm=float(120), DivideVCCV=False):
+    def gen_CVVC(self, path='reclist_cvvc.txt', length=5, UsePlanB=False, CV_head=True, IncludeVV=False, UseUnderlineInReclist=False, otopath='oto.ini', OtoMaxOfSameCV=-1, OtoMaxOfSameVC=-1, preset_blank=float(500), oto_bpm=float(120), DivideVCCV=False):
         reclist = []  # List<List<cv>> 按行收录
         vc_remained = self.vclist[:]  # 余下的VC部
         vR_remained = self.vlist[:]  # 余下的V_R
@@ -371,7 +371,8 @@ class worker():
 
         # 写入oto文件
         f_oto = open(otopath, 'w', encoding='UTF-8')
-        exist_list = []
+        exist_list_cv = []
+        exist_list_vc = []
         ticks = float(60) / oto_bpm * float(1000)
         vc_list_temp = []
         repeat_list = []
@@ -393,19 +394,18 @@ class worker():
                 else:
                     _name = None
                 if _name != None:
-                    if OtoMaxOfSame == -1 or exist_list.count(_name) < OtoMaxOfSame:
-                        asd = exist_list.count(_name)
+                    if OtoMaxOfSameVC == -1 or exist_list_vc.count(_name) < OtoMaxOfSameVC:
                         text += _name
-                        if exist_list.count(_name) > 0:
-                            text += str(exist_list.count(_name) + 1)
-                            if exist_list.count(_name) == 1:
+                        if exist_list_vc.count(_name) > 0:
+                            text += str(exist_list_vc.count(_name) + 1)
+                            if exist_list_vc.count(_name) == 1:
                                 repeat_list.append(
-                                    _name + ',' + str(exist_list.count(_name) + 1) + '\n')
+                                    _name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
                             else:
                                 repeat_list.remove(
-                                    _name + ',' + str(exist_list.count(_name)) + '\n')
+                                    _name + ',' + str(exist_list_vc.count(_name)) + '\n')
                                 repeat_list.append(
-                                    _name + ',' + str(exist_list.count(_name) + 1) + '\n')
+                                    _name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
                         text += ',' + \
                             "{:.1f}".format(
                                 preset_blank - 0.5 * ticks + float(count) * ticks)
@@ -417,7 +417,7 @@ class worker():
                             vc_list_temp.append(text + '\n')
                         else:
                             f_oto.write(text + "\n")
-                        exist_list.append(_name)
+                        exist_list_vc.append(_name)
 
                 # CV
                 text = row_text
@@ -429,20 +429,20 @@ class worker():
                 if UsePlanB and row_count == 2 and len(row) == 3:
                     _name = _name + "_L"
 
-                if OtoMaxOfSame == -1 or exist_list.count(_name) < OtoMaxOfSame:
+                if OtoMaxOfSameCV == -1 or exist_list_cv.count(_name) < OtoMaxOfSameCV:
                     text += _name
                     repeat_time = ''
-                    if exist_list.count(_name) > 0:
-                        repeat_time = str(exist_list.count(_name) + 1)
+                    if exist_list_cv.count(_name) > 0:
+                        repeat_time = str(exist_list_cv.count(_name) + 1)
                         text += repeat_time
-                        if exist_list.count(_name) == 1:
+                        if exist_list_cv.count(_name) == 1:
                             repeat_list.append(
-                                _name + ',' + str(exist_list.count(_name) + 1) + '\n')
+                                _name + ',' + str(exist_list_cv.count(_name) + 1) + '\n')
                         else:
                             repeat_list.remove(
-                                _name + ',' + str(exist_list.count(_name)) + '\n')
+                                _name + ',' + str(exist_list_cv.count(_name)) + '\n')
                             repeat_list.append(
-                                _name + ',' + str(exist_list.count(_name) + 1) + '\n')
+                                _name + ',' + str(exist_list_cv.count(_name) + 1) + '\n')
                     text += ',' + \
                         "{:.1f}".format(preset_blank - 0.1 *
                                         ticks + float(count) * ticks)
@@ -451,7 +451,7 @@ class worker():
                     text += ',' + "{:.1f}".format(0.1 * ticks)
                     text += ',' + "{:.1f}".format(0.1 * ticks / float(3))
                     f_oto.write(text + "\n")
-                    exist_list.append(_name)
+                    exist_list_cv.append(_name)
 
                 cv_last = _cv
                 count += 1
@@ -460,19 +460,18 @@ class worker():
             # V_R
             text = row_text
             _name = cv_last.v + ' R'
-            if OtoMaxOfSame == -1 or exist_list.count(_name) < OtoMaxOfSame:
-                asd = exist_list.count(_name)
+            if OtoMaxOfSameVC == -1 or exist_list_vc.count(_name) < OtoMaxOfSameVC:
                 text += _name
-                if exist_list.count(_name) > 0:
-                    text += str(exist_list.count(_name) + 1)
-                    if exist_list.count(_name) == 1:
+                if exist_list_vc.count(_name) > 0:
+                    text += str(exist_list_vc.count(_name) + 1)
+                    if exist_list_vc.count(_name) == 1:
                         repeat_list.append(
-                            _name + ',' + str(exist_list.count(_name) + 1) + '\n')
+                            _name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
                     else:
                         repeat_list.remove(
-                            _name + ',' + str(exist_list.count(_name)) + '\n')
+                            _name + ',' + str(exist_list_vc.count(_name)) + '\n')
                         repeat_list.append(
-                            _name + ',' + str(exist_list.count(_name) + 1) + '\n')
+                            _name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
                 text += ',' + \
                     "{:.1f}".format(preset_blank - 0.5 *
                                     ticks + float(count) * ticks)
@@ -484,7 +483,7 @@ class worker():
                     vc_list_temp.append(text + '\n')
                 else:
                     f_oto.write(text + "\n")
-                exist_list.append(_name)
+                exist_list_vc.append(_name)
 
         if DivideVCCV:
             f_oto.writelines(vc_list_temp)
@@ -505,13 +504,14 @@ _include_VV = ''.join(re.split(r'[,=]+', ini[5])[1]).strip('\n') == 'True'
 _use_underbar = ''.join(re.split(r'[,=]+', ini[6])[1]).strip('\n') == 'True'
 _use_planb = ''.join(re.split(r'[,=]+', ini[7])[1]).strip('\n') == 'True'
 _oto_output_path = ''.join(re.split(r'[,=]+', ini[9])[1]).strip('\n')
-_oto_max_of_same = int(''.join(re.split(r'[,=]+', ini[10])[1]).strip('\n'))
-_oto_preset_blank = int(''.join(re.split(r'[,=]+', ini[11])[1]).strip('\n'))
-_oto_bpm = int(''.join(re.split(r'[,=]+', ini[12])[1]).strip('\n'))
+_oto_max_of_same_cv = int(''.join(re.split(r'[,=]+', ini[10])[1]).strip('\n'))
+_oto_max_of_same_vc = int(''.join(re.split(r'[,=]+', ini[11])[1]).strip('\n'))
+_oto_preset_blank = int(''.join(re.split(r'[,=]+', ini[12])[1]).strip('\n'))
+_oto_bpm = int(''.join(re.split(r'[,=]+', ini[13])[1]).strip('\n'))
 _oto_divide_vccv = ''.join(
-    re.split(r'[,=]+', ini[13])[1]).strip('\n') == 'True'
+    re.split(r'[,=]+', ini[14])[1]).strip('\n') == 'True'
 
 my_worker = worker()
 my_worker.read_presamp(_input_path)
 my_worker.gen_CVVC(_reclist_output_path, _length, _use_planb, _include_CV_head, _include_VV,
-                   _use_underbar, _oto_output_path, _oto_max_of_same, _oto_preset_blank, _oto_bpm, _oto_divide_vccv)
+                   _use_underbar, _oto_output_path, _oto_max_of_same_cv, _oto_max_of_same_vc, _oto_preset_blank, _oto_bpm, _oto_divide_vccv)
