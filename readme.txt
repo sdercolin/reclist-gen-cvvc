@@ -12,6 +12,7 @@ length=8		每句的字数
 include_CV_head=True		是否要求包含句首CV字（True为要求，False为不要求）
 include_VV=True		是否要求包含VV字（True为要求，False为不要求）
 use_underbar=True		字与字之间是否加入“_”（True为是，False为否）
+use_planb=True		是否使用Plan B（另附说明）
 oto_output_path=oto.ini		输出oto文件的相对路径
 oto_max_of_same_cv=3		oto中相同CV音素最多重复出现的条目数
 oto_max_of_same_vc=3		oto中相同VC音素最多重复出现的条目数
@@ -25,6 +26,9 @@ oto_devide_vccv=False		是否将VC和CV分开排列（True为是，False为否�
 **更新履历**
 20191120:
  - 将"oto_max_of_same"参数分为了分别针对CV和VC的两个参数。
+
+20180918：
+ - 增加了Plan B。
 
 20180108：
  - 修正了oto文件中R不占位的错误。
