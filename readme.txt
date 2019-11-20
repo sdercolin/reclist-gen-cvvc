@@ -2,8 +2,8 @@ ReclistGen_CVVC ver20191120
 本程序通过读取presamp文件，自动生成CVVC录音表以及对应的初始oto模板。
 
 用法：
-按需求修改配置文件：reclistGen_CVVC.ini，然后运行reclistGen_CVVC.exe即可。
-（也可以执行reclistGen_CVVC.py）
+按需求修改配置文件：reclist-gen-cvvc.ini，然后运行reclist-gen-cvvc.exe即可。
+（也可以执行reclist-gen-cvvc.py）
 
 配置说明：
 input_path=presamp.ini		输入presamp文件的相对路径

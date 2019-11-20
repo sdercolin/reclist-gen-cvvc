@@ -495,7 +495,7 @@ class worker():
         return
 
 
-ini = open('reclistGen_CVVC.ini', 'r', encoding='UTF-8').readlines()
+ini = open('reclist-gen-cvvc.ini', 'r', encoding='UTF-8').readlines()
 _input_path = ''.join(re.split(r'[,=]+', ini[1])[1]).strip('\n')
 _reclist_output_path = ''.join(re.split(r'[,=]+', ini[2])[1]).strip('\n')
 _length = int(''.join(re.split(r'[,=]+', ini[3])[1]).strip('\n'))
