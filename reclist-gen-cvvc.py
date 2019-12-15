@@ -254,7 +254,8 @@ class worker():
                     else:
                         cv_now = self.findcv_c(self.cvlist, vc_wanted.c)
                     add_flag = 1  # 点亮增字标记
-                    vc_wanted = vc_remained[0]  # 随意取出一个下轮的VC部
+                    if(len(vc_remained) > 0):
+                        vc_wanted = vc_remained[0]  # 随意取出一个下轮的VC部
                     break  # 离开本轮子循环
 
                 # 检查搜索到的CV字是否符合要求
