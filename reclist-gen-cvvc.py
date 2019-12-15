@@ -59,24 +59,20 @@ class worker():
         C_list = []
         CV_V_list = []
         CV_C_list = []
-        start = 0
+        tag = ''
         for temp in open(filename, 'r', encoding='UTF-8').readlines():
-            if(start == 0):
-                if(temp == '[VOWEL]\n'):
-                    start = 1
-                else:
-                    start = 0
-            elif(start == 1):
-                if(temp == '[CONSONANT]\n'):
-                    start = 2
-                else:
+            if (temp.find('[VOWEL]') != -1):
+                tag = '[VOWEL]'
+            elif (temp.find('[CONSONANT]') != -1):
+                tag = '[CONSONANT]'
+            elif (temp.find('[') != -1):
+                tag = ''
+            else:
+                if(tag == '[VOWEL]'):
                     temp_list = re.split(r'[,=]+', temp)
                     V_list.append(temp_list[0])
                     CV_V_list.append(temp_list[2:-1])
-            elif(start == 2):
-                if(temp == '[PRIORITY]\n'):
-                    start = 3
-                else:
+                elif(tag == '[CONSONANT]'):
                     temp_list = re.split(r'[,=]+', temp)
                     if V_list.count(temp_list[0]) == 0:
                         C_list.append(temp_list[0])
