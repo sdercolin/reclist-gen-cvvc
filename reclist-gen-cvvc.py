@@ -125,7 +125,7 @@ class worker():
             for _vv in self.vvlist:
                 read_result.write(_vv.name + "\r\n")
 
-    def gen_CVVC(self, path='reclist_cvvc.txt', length=5, UsePlanB=False, CV_head=True, IncludeVV=False, UseUnderlineInReclist=False, otopath='oto.ini', OtoMaxOfSameCV=-1, OtoMaxOfSameVC=-1, preset_blank=float(500), oto_bpm=float(120), DivideVCCV=False):
+    def gen_CVVC(self, path='Reclist.txt', length=8, UsePlanB=True, CV_head=True, IncludeVV=True, UseUnderlineInReclist=True, otopath='oto.ini', OtoMaxOfSameCV=3, OtoMaxOfSameVC=3, preset_blank=float(1250), oto_bpm=float(130), DivideVCCV=True):
         reclist = []  # List<List<cv>> 按行收录
         vc_remained = self.vclist[:]  # 余下的VC部
         vR_remained = self.vlist[:]  # 余下的V_R
