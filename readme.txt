@@ -1,4 +1,4 @@
-ReclistGen_CVVC ver20191120
+ReclistGen_CVVC ver20191215
 本程序通过读取presamp文件，自动生成CVVC录音表以及对应的初始oto模板。
 
 用法：
@@ -24,6 +24,9 @@ oto_devide_vccv=False		是否将VC和CV分开排列（True为是，False为否�
 
 
 **更新履历**
+20191215:
+ - 修正了presamp文件的读取错误。
+ 
 20191120:
  - 将"oto_max_of_same"参数分为了分别针对CV和VC的两个参数。
 
