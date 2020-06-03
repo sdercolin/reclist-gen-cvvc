@@ -1,7 +1,7 @@
 import re
 import codecs
 
-version = "191215"
+version = "200604"
 debug = True
 
 
@@ -176,6 +176,9 @@ class worker():
                 if(vc_remained.count(self.findcv(self.vclist, cv_now.c, cv_now.v))):
                     vc_remained.remove(self.findcv(
                         self.vclist, cv_now.c, cv_now.v))  # 删除已经出现的VC部
+                if(vc_remained.count(self.findcv(self.vvlist, cv_now.c, cv_now.v))):
+                    vc_remained.remove(self.findcv(
+                        self.vvlist, cv_now.c, cv_now.v))  # 删除已经出现的VV部
                 reclist.append(row)
 
         # 补全VC部
