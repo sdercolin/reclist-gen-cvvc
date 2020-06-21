@@ -1,8 +1,8 @@
 import re
 import codecs
 
-version = "200604"
-debug = True
+version = "200621"
+debug = False
 
 
 class cv:
@@ -116,8 +116,7 @@ class worker():
                 read_result.write(_v + " ")
             read_result.write("\r\ncvlist:\r\n")
             for _cv in self.cvlist:
-                read_result.write(_cv.name + "=" + _cv.c +
-                                  " " + _cv.v + "\r\n")
+                read_result.write(_cv.name + "=" + _cv.c + " " + _cv.v + "\r\n")
             read_result.write("\r\nvclist:\r\n")
             for _vc in self.vclist:
                 read_result.write(_vc.name + "\r\n")
@@ -159,8 +158,7 @@ class worker():
                     elif notheadcv_remained.count(cv_now) > 0:
                         notheadcv_remained.remove(cv_now)  # 删除已经出现的句中CV字
                     if(vc_remained.count(self.findcv(self.vclist, cv_now.c, v_last))):
-                        vc_remained.remove(self.findcv(
-                            self.vclist, cv_now.c, v_last))  # 删除已经出现的VC部
+                        vc_remained.remove(self.findcv(self.vclist, cv_now.c, v_last))  # 删除已经出现的VC部
                     v_last = cv_now.v
                 reclist.append(row)
                 # 记录句尾V的出现
@@ -174,11 +172,9 @@ class worker():
                 row.append(cv_now)
                 row.append(cv_now)
                 if(vc_remained.count(self.findcv(self.vclist, cv_now.c, cv_now.v))):
-                    vc_remained.remove(self.findcv(
-                        self.vclist, cv_now.c, cv_now.v))  # 删除已经出现的VC部
+                    vc_remained.remove(self.findcv(self.vclist, cv_now.c, cv_now.v))  # 删除已经出现的VC部
                 if(vc_remained.count(self.findcv(self.vvlist, cv_now.c, cv_now.v))):
-                    vc_remained.remove(self.findcv(
-                        self.vvlist, cv_now.c, cv_now.v))  # 删除已经出现的VV部
+                    vc_remained.remove(self.findcv(self.vvlist, cv_now.c, cv_now.v))  # 删除已经出现的VV部
                 reclist.append(row)
 
         # 补全VC部
@@ -200,8 +196,7 @@ class worker():
             if vc_wanted != None and count != 0:  # 非句首且不出现增字时
                 vc_remained.remove(vc_wanted)  # 取出将要写入的VC部
                 if vc_wanted.type != 'vv':
-                    index_findcv_connective = index_random_findcv_c[self.clist.index(
-                        vc_wanted.c)]
+                    index_findcv_connective = index_random_findcv_c[self.clist.index(vc_wanted.c)]
                 else:
                     index_findcv_connective = 0
             while True:  # 以CV字为单位的子循环
@@ -216,10 +211,8 @@ class worker():
                         if cv_now != None:
                             headcv_remained.remove(cv_now)  # 删除已经出现句首的CV字
                     if cv_now == None:
-                        cv_now = self.findcv_v(self.cvlist, vc_wanted.v, index_random_findcv_v[self.vlist.index(
-                            vc_wanted.v)], True)  # 写入一个以VC部的V结尾的CV字
-                        index_random_findcv_v[self.vlist.index(
-                            vc_wanted.v)] = self.cvlist.index(cv_now) + 1
+                        cv_now = self.findcv_v(self.cvlist, vc_wanted.v, index_random_findcv_v[self.vlist.index(vc_wanted.v)], True)  # 写入一个以VC部的V结尾的CV字
+                        index_random_findcv_v[self.vlist.index(vc_wanted.v)] = self.cvlist.index(cv_now) + 1
                     row.append(cv_now)
                     count += 1
                 elif add_flag == 1:  # 出现增字的情况
@@ -230,11 +223,9 @@ class worker():
                         if(vR_remained.count(row[len(row) - 1].v) > 0):
                             vR_remained.remove(row[len(row) - 1].v)
                         row = []
-                    cv_now = self.findcv_v(self.cvlist, vc_wanted.v, index_random_findcv_v[self.vlist.index(
-                        vc_wanted.v)], True)  # 写入一个以VC部的V结尾的CV字（此字为增字，因为其C和前一个字的V组成的VC部已经不需要）
+                    cv_now = self.findcv_v(self.cvlist, vc_wanted.v, index_random_findcv_v[self.vlist.index(vc_wanted.v)], True)  # 写入一个以VC部的V结尾的CV字（此字为增字，因为其C和前一个字的V组成的VC部已经不需要）
                     if count != 1:  # 如果前一个字是句首则已经写入过，所以不再写入
-                        index_random_findcv_v[self.vlist.index(
-                            vc_wanted.v)] = self.cvlist.index(cv_now) + 1
+                        index_random_findcv_v[self.vlist.index(vc_wanted.v)] = self.cvlist.index(cv_now) + 1
                         row.append(cv_now)
                         if notheadcv_remained.count(cv_now) > 0 and count > 0:
                             notheadcv_remained.remove(cv_now)  # 删除已经出现的句中CV字
@@ -243,8 +234,7 @@ class worker():
 
                 # 搜索确定下一个要写入的CV字，使得其C与上一个字凑成所需要的VC部
                 if index_findcv_connective < len(self.cvlist):
-                    cv_now = self.findcv_c(
-                        self.cvlist, vc_wanted.c, index_findcv_connective)  # 从上次搜索到的位置继续向下搜索
+                    cv_now = self.findcv_c(self.cvlist, vc_wanted.c, index_findcv_connective)  # 从上次搜索到的位置继续向下搜索
                 else:
                     cv_now = None  # 若指针越界或已经搜索完所有结果，则置空cv_now，并准备增字
 
@@ -252,8 +242,7 @@ class worker():
                 if cv_now == None:
                     # 先随意写入一个CV字来完成本轮的VC部，V是什么无所谓，因为没有能够接续下去的V
                     if vc_wanted.type != 'vv':
-                        cv_now = self.findcv_c(
-                            self.cvlist, vc_wanted.c, index_random_findcv_c[self.clist.index(vc_wanted.c)], True)
+                        cv_now = self.findcv_c(self.cvlist, vc_wanted.c, index_random_findcv_c[self.clist.index(vc_wanted.c)], True)
                     else:
                         cv_now = self.findcv_c(self.cvlist, vc_wanted.c)
                     add_flag = 1  # 点亮增字标记
@@ -264,13 +253,11 @@ class worker():
                 # 检查搜索到的CV字是否符合要求
                 # 尝试找到下一个需要的VC部，使得其V与目前检索到的CV字的V相同（即能够接续）
                 vc_wanted_next = self.findcv_v(vc_remained, cv_now.v)
-                index_findcv_connective = self.cvlist.index(
-                    cv_now) + 1  # 记录搜索指针到达的位置
+                index_findcv_connective = self.cvlist.index(cv_now) + 1  # 记录搜索指针到达的位置
                 if vc_wanted_next != None:
                     # 如果找到了符合要求的VC部，则记录该VC部，并离开本轮子循环
                     if vc_wanted.type != 'vv':
-                        index_random_findcv_c[self.clist.index(
-                            vc_wanted.c)] = index_findcv_connective
+                        index_random_findcv_c[self.clist.index(vc_wanted.c)] = index_findcv_connective
                     vc_wanted = vc_wanted_next
                     break
 
@@ -396,16 +383,12 @@ class worker():
                         if exist_list_vc.count(_name) > 0:
                             text += str(exist_list_vc.count(_name) + 1)
                             if exist_list_vc.count(_name) == 1:
-                                repeat_list.append(
-                                    _name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
+                                repeat_list.append(_name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
                             else:
-                                repeat_list.remove(
-                                    _name + ',' + str(exist_list_vc.count(_name)) + '\n')
-                                repeat_list.append(
-                                    _name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
+                                repeat_list.remove(_name + ',' + str(exist_list_vc.count(_name)) + '\n')
+                                repeat_list.append(_name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
                         text += ',' + \
-                            "{:.1f}".format(
-                                preset_blank - 0.5 * ticks + float(count) * ticks)
+                            "{:.1f}".format(preset_blank - 0.5 * ticks + float(count) * ticks)
                         text += ',' + "{:.1f}".format(0.65 * ticks)
                         text += ',' + "{:.1f}".format(-1 * ticks)
                         text += ',' + "{:.1f}".format(0.5 * ticks)
@@ -433,16 +416,12 @@ class worker():
                         repeat_time = str(exist_list_cv.count(_name) + 1)
                         text += repeat_time
                         if exist_list_cv.count(_name) == 1:
-                            repeat_list.append(
-                                _name + ',' + str(exist_list_cv.count(_name) + 1) + '\n')
+                            repeat_list.append(_name + ',' + str(exist_list_cv.count(_name) + 1) + '\n')
                         else:
-                            repeat_list.remove(
-                                _name + ',' + str(exist_list_cv.count(_name)) + '\n')
-                            repeat_list.append(
-                                _name + ',' + str(exist_list_cv.count(_name) + 1) + '\n')
+                            repeat_list.remove(_name + ',' + str(exist_list_cv.count(_name)) + '\n')
+                            repeat_list.append(_name + ',' + str(exist_list_cv.count(_name) + 1) + '\n')
                     text += ',' + \
-                        "{:.1f}".format(preset_blank - 0.1 *
-                                        ticks + float(count) * ticks)
+                        "{:.1f}".format(preset_blank - 0.1 * ticks + float(count) * ticks)
                     text += ',' + "{:.1f}".format(0.3 * ticks)
                     text += ',' + "{:.1f}".format(float(-0.7) * ticks)
                     text += ',' + "{:.1f}".format(0.1 * ticks)
@@ -462,16 +441,12 @@ class worker():
                 if exist_list_vc.count(_name) > 0:
                     text += str(exist_list_vc.count(_name) + 1)
                     if exist_list_vc.count(_name) == 1:
-                        repeat_list.append(
-                            _name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
+                        repeat_list.append(_name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
                     else:
-                        repeat_list.remove(
-                            _name + ',' + str(exist_list_vc.count(_name)) + '\n')
-                        repeat_list.append(
-                            _name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
+                        repeat_list.remove(_name + ',' + str(exist_list_vc.count(_name)) + '\n')
+                        repeat_list.append(_name + ',' + str(exist_list_vc.count(_name) + 1) + '\n')
                 text += ',' + \
-                    "{:.1f}".format(preset_blank - 0.5 *
-                                    ticks + float(count) * ticks)
+                    "{:.1f}".format(preset_blank - 0.5 * ticks + float(count) * ticks)
                 text += ',' + "{:.1f}".format(0.65 * ticks)
                 text += ',' + "{:.1f}".format(-1 * ticks)
                 text += ',' + "{:.1f}".format(0.5 * ticks)
@@ -505,8 +480,7 @@ _oto_max_of_same_cv = int(''.join(re.split(r'[,=]+', ini[10])[1]).strip('\n'))
 _oto_max_of_same_vc = int(''.join(re.split(r'[,=]+', ini[11])[1]).strip('\n'))
 _oto_preset_blank = int(''.join(re.split(r'[,=]+', ini[12])[1]).strip('\n'))
 _oto_bpm = int(''.join(re.split(r'[,=]+', ini[13])[1]).strip('\n'))
-_oto_divide_vccv = ''.join(
-    re.split(r'[,=]+', ini[14])[1]).strip('\n') == 'True'
+_oto_divide_vccv = ''.join(re.split(r'[,=]+', ini[14])[1]).strip('\n') == 'True'
 
 my_worker = worker()
 my_worker.read_presamp(_input_path)
