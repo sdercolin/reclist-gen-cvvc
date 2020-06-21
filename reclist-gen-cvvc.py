@@ -326,11 +326,9 @@ class worker():
                         break
 
             # 补充句中CV
-            while True:
-                # print(notheadcv_remained[0].name)
+            while len(notheadcv_remained)>0:
                 row = []
-                row.append(notheadcv_remained[0])
-                i = 1
+                i = 0
                 while i < length:
                     if len(notheadcv_remained) > 0:
                         row.append(notheadcv_remained[0])
@@ -339,11 +337,10 @@ class worker():
                     else:
                         break
                 reclist.append(row)
+
                 # 记录句尾V的出现
                 if(vR_remained.count(row[len(row) - 1].v) > 0):
                     vR_remained.remove(row[len(row) - 1].v)
-                if len(notheadcv_remained) == 0:
-                    break
 
             # 补充V_R
             for v_R in vR_remained:
